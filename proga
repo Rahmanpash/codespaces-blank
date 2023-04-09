@@ -1,0 +1,71 @@
+let canvas = document.getElementById('myCanvas');
+let ctx = canvas.getContext('2d');
+let scale = 30;
+
+// Рисование линий
+function drawLine(x1, y1, x2, y2) {
+  ctx.beginPath();
+  ctx.moveTo(x1 * scale, y1 * scale);
+  ctx.lineTo(x2 * scale, y2 * scale);
+  ctx.stroke();
+}
+
+// Рисование кругов
+function drawCircle(x, y, r) {
+  ctx.beginPath();
+  ctx.arc(x * scale, y * scale, r * scale, 0, 2 * Math.PI);
+  ctx.stroke();
+}
+
+// Рисование прямоугольников
+function drawRect(x, y, w, h) {
+  ctx.beginPath();
+  ctx.rect(x * scale, y * scale, w * scale, h * scale);
+  ctx.stroke();
+}
+
+// Рисование электрощита
+function drawElectricityPanel() {
+  // рисуем верхнюю линию
+  drawLine(0, 0, 12, 0);
+  // рисуем левую стенку
+  drawLine(0, 0, 0, 10);
+  // рисуем нижнюю линию
+  drawLine(0, 10, 12, 10);
+  // рисуем правую стенку
+  drawLine(12, 0, 12, 10);
+
+  // рисуем автоматические выключатели
+  drawRect(1, 1, 2, 3);
+  drawRect(5, 1, 2, 3);
+  drawRect(9, 1, 2, 3);
+
+  // рисуем устройство защитного отключения (УЗО)
+  drawRect(1, 6, 2, 3);
+  drawCircle(2, 7.5, 0.5);
+
+  // рисуем реле напряжения
+  drawRect(5, 6, 2, 3);
+  drawCircle(6, 7.5, 0.5);
+
+  // рисуем лампы
+  drawCircle(9.5, 6.5, 0.5);
+  drawCircle(9.5, 8.5, 0.5);
+  drawCircle(10.5, 6.5, 0.5);
+  drawCircle(10.5, 8.5, 0.5);
+
+  // рисуем текст
+  ctx.font = "14px Arial";
+  ctx.fillText("Автоматы", 1.5 * scale, 0.8 * scale);
+  ctx.fillText("УЗО", 1.5 * scale, 7.8 * scale);
+  ctx.fillText("Реле", 5.5 * scale, 7.8 * scale);
+  ctx.fillText("Лампы", 9 * scale, 7.8 * scale);
+}
+
+// Сохранение изображения в PDF
+function saveAsPdf() {
+  var imgData = canvas.toDataURL("image/jpeg", 1.0);
+  var pdf = new jsPDF();
+  pdf.addImage(imgData, 'JPEG', 0, 0);
+  pdf.save("электрощит.pdf");
+}
